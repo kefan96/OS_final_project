@@ -17,9 +17,9 @@ unsigned int xorbuf(unsigned int *buffer, int size) {
     return result;
 }
 
-int read_file(char* fname, int block_size) {
+double read_file(char* fname, int block_size) {
     int input_fd;
-    int file_size = 0;
+    double file_size = 0.0;
     unsigned int *buffer;
     ssize_t ret_in;
     int xor_result = 0;
@@ -33,7 +33,7 @@ int read_file(char* fname, int block_size) {
     buffer = (unsigned int*) malloc((size_t) block_size); 
 
     while((ret_in = read (input_fd, buffer, block_size)) > 0){
-        file_size += ret_in;
+        file_size += (ret_in / 1024.0 / 1024);
         xor_result ^= xorbuf(buffer, ret_in);
     }
 
@@ -44,11 +44,12 @@ int read_file(char* fname, int block_size) {
     return file_size;
 }
 
-int write_file(char* fname, int block_size, int block_count) {
+double write_file(char* fname, int block_size, int block_count) {
     int output_fd;
     unsigned int *buffer;
     int i, j;
-    ssize_t ret_out, file_size;
+    ssize_t ret_out;
+    double file_size = 0.0;
 
     output_fd = open(fname, O_WRONLY | O_CREAT, 0644);
     if (output_fd == -1) {
@@ -57,7 +58,6 @@ int write_file(char* fname, int block_size, int block_count) {
     }
 
     buffer = (unsigned int*) malloc((size_t) block_size); 
-    file_size = 0;
 
     srand(time(NULL));
     for (i=0; i<block_count; i++) {
@@ -69,7 +69,7 @@ int write_file(char* fname, int block_size, int block_count) {
             perror("write error");
             exit(EXIT_FAILURE);
         }
-        file_size += ret_out;
+        file_size += (ret_out / 1024.0 / 1024);
     }
 
     close(output_fd);
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
     char* option = argv[2];
     unsigned int block_size = strtol(argv[3], NULL, 10);
     unsigned int block_count;
-    unsigned int file_size;
+    double file_size;
     clock_t begin, end;
     double time_spent;
     
@@ -92,13 +92,13 @@ int main(int argc, char* argv[]) {
         file_size = write_file(fname, block_size, block_count);
         end = clock();
         time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-        printf("Done writing. The file size is: %d bytes, total time spent: %f seconds\n", file_size, time_spent);
+        printf("Done writing.\n file size: %f MB \t total time spent: %f seconds \t speed: %f\n", file_size, time_spent, file_size/time_spent);
     } else if (strcmp(option, "-r") == 0) {
         begin = clock();
         file_size = read_file(fname, block_size);
         end = clock();
         time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-        printf("Done reading. The file size is: %d bytes, total time spent: %f seconds\n", file_size, time_spent);
+        printf("Done reading.\n file size: %f MB \t total time spent: %f seconds \t speed: %f\n", file_size, time_spent, file_size/time_spent);
     }
 
     return (EXIT_SUCCESS);

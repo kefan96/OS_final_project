@@ -33,7 +33,7 @@ double read_file(char* fname, int block_size) {
     buffer = (unsigned int*) malloc((size_t) block_size); 
 
     while((ret_in = read (input_fd, buffer, block_size)) > 0){
-        file_size += (ret_in / 1024.0);
+        file_size += (ret_in / 1024.0 / 1024);
         xor_result ^= xorbuf(buffer, ret_in);
     }
 
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
     file_size = read_file(fname, BLOCK_SIZE);
     end = clock();
     time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-    printf("Done reading. The file size is: %d KB, total time spent: %f seconds\n", file_size, time_spent);
+    printf("Done reading.\n file size: %f MB \t total time spent: %f seconds \t speed: %f\n", file_size, time_spent, file_size/time_spent);
 
     return (EXIT_SUCCESS);
 }
