@@ -21,6 +21,7 @@ echo "Cache cleared, read the file with 1024 block size"
 echo ""
 echo "Read the file with the same block size again"
 ./run2 output 1024
+echo ""
 echo "=============Small block============="
 echo "Write a small file for quicker reading"
 ./run small -w 1024 1
