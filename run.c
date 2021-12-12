@@ -7,8 +7,6 @@
 #include <time.h>
 #include <string.h>
 
-#define SIZE 8192
-
 unsigned int xorbuf(unsigned int *buffer, int size) {
     unsigned int result = 0;
     for (int i = 0; i < size; i++) {
@@ -92,13 +90,13 @@ int main(int argc, char* argv[]) {
         file_size = write_file(fname, block_size, block_count);
         end = clock();
         time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-        printf("Done writing.\n file size: %f MB \t total time spent: %f seconds \t speed: %f\n", file_size, time_spent, file_size/time_spent);
+        printf("Done writing.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\n", file_size, time_spent, file_size/time_spent);
     } else if (strcmp(option, "-r") == 0) {
         begin = clock();
         file_size = read_file(fname, block_size);
         end = clock();
         time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-        printf("Done reading.\n file size: %f MB \t total time spent: %f seconds \t speed: %f\n", file_size, time_spent, file_size/time_spent);
+        printf("Done reading.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\n", file_size, time_spent, file_size/time_spent);
     }
 
     return (EXIT_SUCCESS);

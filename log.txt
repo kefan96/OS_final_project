@@ -1,0 +1,66 @@
+============Question 1==============
+Write file with block size: 1024, block count: 1024000
+Done writing.
+file size: 1000.000000 MB
+total time spent: 3.420713 seconds
+speed: 292.336715 MB/S
+
+Read the file created
+The result of the xor calculation: 7f643409
+Done reading.
+file size: 2000.000000 MB
+total time spent: 7.998532 seconds
+speed: 250.045883 MB/S
+
+============Question 2-5=============
+Write file with reasonable size
+Done writing.
+file size: 2000.000000 MB
+total time spent: 6.075781 seconds
+speed: 329.175788 MB/S
+
+Read the file created
+The result of the xor calculation: 75d9bb9b
+Done reading.
+file size: 2000.000000 MB
+total time spent: 6.706067 seconds
+speed: 298.237402 MB/S
+
+==============Caching================
+Cache cleared, read the file with 1024 block size
+The result of the xor calculation: 75d9bb9b
+Done reading.
+file size: 2000.000000 MB
+total time spent: 9.036066 seconds
+speed: 221.335258 MB/S
+
+Read the file with the same block size again
+The result of the xor calculation: 75d9bb9b
+Done reading.
+file size: 2000.000000 MB
+total time spent: 6.515496 seconds
+speed: 306.960514 MB/S
+=============Small block=============
+Write a small file for quicker reading
+Done writing.
+file size: 0.000977 MB
+total time spent: 0.000266 seconds
+speed: 3.671288 MB/S
+
+Read the file file block size equals to 1
+The result of the xor calculation: 83
+Done reading.
+file size: 0.000977 MB
+total time spent: 0.000580 seconds
+speed: 1.683728 MB/S
+
+============Extra Credit=============
+Read the file with dd command with bs=1024
+
+=============Question 6==============
+See the optimized performance
+The result of the xor calculation: 4346d0bf
+Done reading.
+file size: 2000.000000 MB
+total time spent: 2.617898 seconds
+speed: 763.971706
