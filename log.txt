@@ -40,6 +40,7 @@ Done reading.
 file size: 2000.000000 MB
 total time spent: 6.515496 seconds
 speed: 306.960514 MB/S
+
 =============Small block=============
 Write a small file for quicker reading
 Done writing.
