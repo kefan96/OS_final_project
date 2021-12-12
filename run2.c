@@ -7,8 +7,6 @@
 #include <time.h>
 #include <string.h>
 
-#define BLOCK_SIZE 30500
-
 unsigned int xorbuf(unsigned int *buffer, int size) {
     unsigned int result = 0;
     for (int i = 0; i < size; i++) {
@@ -22,7 +20,7 @@ double read_file(char* fname, int block_size) {
     double file_size = 0.0;
     unsigned int *buffer;
     ssize_t ret_in;
-    unsigned int xor_result = 0;
+    int xor_result = 0;
 
     input_fd = open(fname, O_RDONLY);
     if (input_fd == -1) {
@@ -46,14 +44,14 @@ double read_file(char* fname, int block_size) {
 
 int main(int argc, char* argv[]) {
     char* fname = argv[1];
+    unsigned int block_size = strtol(argv[2], NULL, 10);
     double file_size;
     clock_t begin, end;
     double time_spent;
     begin = clock();
-    file_size = read_file(fname, BLOCK_SIZE);
+    file_size = read_file(fname, block_size);
     end = clock();
     time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-    printf("Done reading.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f\n", file_size, time_spent, file_size/time_spent);
-
+    printf("Done reading.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\n", file_size, time_spent, file_size/time_spent);
     return (EXIT_SUCCESS);
 }
