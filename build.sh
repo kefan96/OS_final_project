@@ -4,7 +4,10 @@ echo "Write file with block size: 1024, block count: 1024000"
 ./run output -w 1024 1024000
 echo ""
 echo "Read the file created"
-./run output -r 1024
+./run output -r 1024 1024000
+echo ""
+echo "Read half of the file"
+./run output -r 1024 512000
 echo ""
 echo "============Question 2-5============="
 gcc run2.c -o run2

@@ -15,8 +15,8 @@ unsigned int xorbuf(unsigned int *buffer, int size) {
     return result;
 }
 
-double read_file(char* fname, int block_size) {
-    int input_fd;
+double read_file(char* fname, int block_size, int block_count) {
+    int input_fd, i;
     double file_size = 0.0;
     unsigned int *buffer;
     ssize_t ret_in;
@@ -30,7 +30,12 @@ double read_file(char* fname, int block_size) {
     
     buffer = (unsigned int*) malloc((size_t) block_size); 
 
-    while((ret_in = read (input_fd, buffer, block_size)) > 0){
+    for (i=0; i<block_count; i++){
+        ret_in = read (input_fd, buffer, block_size);
+        if (ret_in < 0) {
+            perror("read error");
+            exit(EXIT_FAILURE);
+        }
         file_size += (ret_in / 1024.0 / 1024);
         xor_result ^= xorbuf(buffer, ret_in);
     }
@@ -79,13 +84,12 @@ int main(int argc, char* argv[]) {
     char* fname = argv[1];
     char* option = argv[2];
     unsigned int block_size = strtol(argv[3], NULL, 10);
-    unsigned int block_count;
+    unsigned int block_count = strtol(argv[4], NULL, 10);
     double file_size;
     clock_t begin, end;
     double time_spent;
     
     if (strcmp(option, "-w") == 0) {
-        block_count = strtol(argv[4], NULL, 10);
         begin = clock();
         file_size = write_file(fname, block_size, block_count);
         end = clock();
@@ -93,7 +97,7 @@ int main(int argc, char* argv[]) {
         printf("Done writing.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\n", file_size, time_spent, file_size/time_spent);
     } else if (strcmp(option, "-r") == 0) {
         begin = clock();
-        file_size = read_file(fname, block_size);
+        file_size = read_file(fname, block_size, block_count);
         end = clock();
         time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
         printf("Done reading.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\n", file_size, time_spent, file_size/time_spent);

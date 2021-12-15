@@ -2,66 +2,73 @@
 Write file with block size: 1024, block count: 1024000
 Done writing.
 file size: 1000.000000 MB
-total time spent: 3.420713 seconds
-speed: 292.336715 MB/S
+total time spent: 5.571378 seconds
+speed: 179.488809 MB/S
 
 Read the file created
-The result of the xor calculation: 7f643409
+The result of the xor calculation: 7405946b
 Done reading.
-file size: 2000.000000 MB
-total time spent: 7.998532 seconds
-speed: 250.045883 MB/S
+file size: 1000.000000 MB
+total time spent: 3.327306 seconds
+speed: 300.543443 MB/S
+
+Read half of the file
+The result of the xor calculation: 5bc5f22c
+Done reading.
+file size: 500.000000 MB
+total time spent: 1.591566 seconds
+speed: 314.155995 MB/S
 
 ============Question 2-5=============
 Write file with reasonable size
 Done writing.
 file size: 2000.000000 MB
-total time spent: 6.075781 seconds
-speed: 329.175788 MB/S
+total time spent: 7.428642 seconds
+speed: 269.228212 MB/S
 
 Read the file created
-The result of the xor calculation: 75d9bb9b
+The result of the xor calculation: 1d2a8a99
 Done reading.
 file size: 2000.000000 MB
-total time spent: 6.706067 seconds
-speed: 298.237402 MB/S
+total time spent: 9.993754 seconds
+speed: 200.124998 MB/S
 
 ==============Caching================
 Cache cleared, read the file with 1024 block size
-The result of the xor calculation: 75d9bb9b
+The result of the xor calculation: 1d2a8a99
 Done reading.
 file size: 2000.000000 MB
-total time spent: 9.036066 seconds
-speed: 221.335258 MB/S
+total time spent: 9.910515 seconds
+speed: 201.805860 MB/S
 
 Read the file with the same block size again
-The result of the xor calculation: 75d9bb9b
+The result of the xor calculation: 1d2a8a99
 Done reading.
 file size: 2000.000000 MB
-total time spent: 6.515496 seconds
-speed: 306.960514 MB/S
+total time spent: 6.454916 seconds
+speed: 309.841367 MB/S
 
 =============Small block=============
 Write a small file for quicker reading
 Done writing.
 file size: 0.000977 MB
-total time spent: 0.000266 seconds
-speed: 3.671288 MB/S
+total time spent: 0.000437 seconds
+speed: 2.234697 MB/S
 
 Read the file file block size equals to 1
-The result of the xor calculation: 83
+The result of the xor calculation: da
 Done reading.
 file size: 0.000977 MB
-total time spent: 0.000580 seconds
-speed: 1.683728 MB/S
+total time spent: 0.000827 seconds
+speed: 1.180849 MB/S
 
 ============Extra Credit=============
 Read the file with dd command with bs=1024
 
 =============Question 6==============
 See the optimized performance
-The result of the xor calculation: 4346d0bf
+The result of the xor calculation: 661cc340
 Done reading.
 file size: 2000.000000 MB
-total time spent: 2.617898 seconds
-speed: 763.971706
+total time spent: 3.739610 seconds
+speed: 534.815128
