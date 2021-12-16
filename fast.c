@@ -7,7 +7,7 @@
 #include <time.h>
 #include <string.h>
 
-#define BLOCK_SIZE 30500
+#define BLOCK_SIZE 32768
 
 unsigned int xorbuf(unsigned int *buffer, int size) {
     unsigned int result = 0;

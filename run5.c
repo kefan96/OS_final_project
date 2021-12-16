@@ -7,6 +7,9 @@
 #include <time.h>
 #include <string.h>
 
+#define BLOCK_SIZE 1
+#define BLOCK_COUNT 102400
+
 unsigned int xorbuf(unsigned int *buffer, int size) {
     unsigned int result = 0;
     for (int i = 0; i < size; i++) {
@@ -47,35 +50,27 @@ double read_file(char* fname, int block_size, int block_count) {
     return file_size;
 }
 
-double write_file(char* fname, int block_size, int block_count) {
-    int output_fd;
-    unsigned int *buffer;
-    int i, j;
-    ssize_t ret_out;
+double lseek_file(char* fname, int block_size, int block_count) {
+    int input_fd, i;
     double file_size = 0.0;
+    off_t off;
 
-    output_fd = open(fname, O_WRONLY | O_CREAT, 0644);
-    if (output_fd == -1) {
+    input_fd = open(fname, O_RDONLY);
+        if (input_fd == -1) {
         perror("open file error");
         exit(EXIT_FAILURE);
     }
 
-    buffer = (unsigned int*) malloc((size_t) block_size); 
-
-    srand(time(NULL));
     for (i=0; i<block_count; i++) {
-        for (j=0; j<block_size/4; j++) {
-            buffer[j] = (unsigned int) rand();
-        }
-        ret_out = write (output_fd, buffer, (ssize_t) block_size);
-        if (ret_out != block_size) {
-            perror("write error");
+        off = lseek(input_fd, block_size, SEEK_CUR);
+        if (off < 0) {
+            perror("seek error");
             exit(EXIT_FAILURE);
         }
-        file_size += (ret_out / 1024.0 / 1024);
+        file_size += (block_size / 1024.0 / 1024);
     }
 
-    close(output_fd);
+    close(input_fd);
 
     return file_size;
 }
@@ -83,28 +78,27 @@ double write_file(char* fname, int block_size, int block_count) {
 int main(int argc, char* argv[]) {
     char* fname = argv[1];
     char* option = argv[2];
-    unsigned int block_size = strtol(argv[3], NULL, 10);
-    unsigned int block_count = strtol(argv[4], NULL, 10);
     double file_size;
     clock_t begin, end;
     double time_spent;
-    
-    if (strcmp(option, "-w") == 0) {
+
+    if (strcmp(option, "-r") == 0) {
         begin = clock();
-        file_size = write_file(fname, block_size, block_count);
+        file_size = read_file(fname, BLOCK_SIZE, BLOCK_COUNT);
         end = clock();
         time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-        printf("Done writing.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\n", file_size, time_spent, file_size/time_spent);
-    } else if (strcmp(option, "-r") == 0) {
+        printf("Done reading.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\nsystem call speed: %f B/S\n",
+                file_size, time_spent, file_size/time_spent, file_size/time_spent*1024*1024);
+    } else if (strcmp(option, "-s") == 0) {
         begin = clock();
-        file_size = read_file(fname, block_size, block_count);
+        file_size = lseek_file(fname, BLOCK_SIZE, BLOCK_COUNT);
         end = clock();
         time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
-        printf("Done reading.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\n", file_size, time_spent, file_size/time_spent);
+        printf("Done seeking.\nfile size: %f MB\ntotal time spent: %f seconds\nspeed: %f MB/S\nsystem call speed: %f B/S\n",
+                file_size, time_spent, file_size/time_spent, file_size/time_spent*1024*1024);
     } else {
         perror("option error");
         exit(EXIT_FAILURE);
     }
-
     return (EXIT_SUCCESS);
 }

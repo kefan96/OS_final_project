@@ -27,10 +27,14 @@ echo "Read the file with the same block size again"
 echo ""
 echo "=============Small block============="
 echo "Write a small file for quicker reading"
-./run small -w 1024 1
+./run small -w 1024 100
 echo ""
 echo "Read the file file block size equals to 1"
-./run2 small 1
+gcc run5.c -o run5
+./run5 small -r
+echo ""
+echo "Use lseek to get better system call speed"
+./run5 small -s
 echo ""
 echo "============Extra Credit============="
 echo "Read the file with dd command with bs=1024"
